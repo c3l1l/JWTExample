@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        function getAjax() {
+            let xhr=new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                   // alert(xhr.responseText);
+
+                    let tablo = document.getElementById("tablo");
+                    let data =Array.from(JSON.parse(xhr.responseText));
+
+                    for (var i = 0; i < data.length; i++) {
+                        let tr = document.createElement("tr");
+                        let id = document.createElement("td");
+                        let ad = document.createElement("td");
+
+                        id.innerHTML = data[i].filmId; //innerHtml ile birlikte let id olarak tanimlanan td bilesenine html eklenir.
+                        ad.innerHTML = data[i].filmAdi;
+                        tr.appendChild(id);
+                        tr.appendChild(ad);
+
+                        tablo.appendChild(tr);
+                    }
+                }
+            };
+
+            xhr.open("GET","https://localhost:7070/api/filmservis",true); //3.parametre asenkron calisip calismayacagini belirler.
+            xhr.send();
+        }         
+        
+    </script>
+</head>
+<body>
+    <form>
+        <input type="text" id="ad" />
+        <input type="text" id="sure" />
+        <input type="text" id="katId" />
+    </form>
+    <button onclick="getAjax()">Filmleri Getir</button>
+    
+    <table id="tablo">
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>

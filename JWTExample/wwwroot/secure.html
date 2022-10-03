@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        function loginAJAX() {
+            let xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.status == 200 && xhr.readyState== 4) {
+                    alert(xhr.responseText);
+                    localStorage.setItem("token", "Bearer " + xhr.responseText);
+                }
+            }
+            xhr.open("POST", "https://localhost:7070/api/secure", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            let name = document.getElementById("kullanici").value;
+            let pwd = document.getElementById("sifre").value;
+            let user = { username:name, password:pwd};
+            xhr.send(JSON.stringify(user));
+
+        }
+        function getDataAJAX() {
+            let xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    alert(xhr.responseText);
+                }
+            }
+
+            xhr.open("GET", "https://localhost:7070/api/secure", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            let token = localStorage.getItem("token");
+            xhr.setRequestHeader("Authorization", token);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <form action="/" method="post">
+        <input type="text" id="kullanici" />
+        <input type="password" id="sifre" />
+    </form>
+    <button onclick="loginAJAX()">Login</button>
+    <button onclick="getDataAJAX()">GetData</button>
+</body>
+</html>
